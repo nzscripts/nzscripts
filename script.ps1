@@ -11,7 +11,7 @@
     Название режима: 'Interactive', 'None', 'Infected', 'Blizzard', 'Phasmophobia', 'Slasher', 'Laboratory', 'Crossbattle', 'Scavenger'.
 
 .PARAMETER ServerPath
-    Целевая директория сервера. По умолчанию текущая папка.
+    Целевая директория сервера. По умолчанию текущая папка (при запуске из Win+R - Desktop\NazzyServer).
 
 .PARAMETER MaxRamGB
     Выделяемая оперативная память (в ГБ). По умолчанию 4.
@@ -49,24 +49,23 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-
 $OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $Script:AvailableModes = @{
-    'Infected'     = @{ Name = 'INFECTED v1.1';           File = 'INFECTED_v1.1_DISCORD.zip';         Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1216449065005486251/INFECTED_v1.1_DISCORD.zip?ex=6ae82a39&is=6ae6d8b9&hm=0b0b93a02e8aeb62e58e80fa885c462226d2a0eab59ab606f2f00545e0bd83f0&' }
-    'Blizzard'     = @{ Name = 'OPERATION BLIZZARD';      File = 'OPERATION_BLIZZARD.zip';    Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1214709450280140880/OPERATION_BLIZZARD.zip?ex=6ae86d95&is=6ae71c15&hm=ecf6b2151bcc6150ef0fc95ce59eb79677698d5469510927b7ad15a03efdafed&' }
-    'Phasmophobia' = @{ Name = 'PHASMOPHOBIA HALLOWEEN';  File = 'PHASMOPHOBIA_HALLOWEEN.rar';Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/905517032265617409/PHASMOPHOBIA_HALLOWEEN.rar?ex=6ae82734&is=6ae6d5b4&hm=9377702f3624aea35b6cd8b45e4a4d4b6342c6cb6d25ec256a6c012c44ccc790&' }
-    'Slasher'      = @{ Name = 'SLASHER (Redwood)';       File = 'SLASHER_Redwood_.rar';       Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/897470764582830091/SLASHER_Redwood_.rar?ex=6ae88b48&is=6ae739c8&hm=c5356cf49c0a27b73f5632b07480c0366bf32eff190bf7ebd513ea7a3d124eda&' }
-    'Laboratory'   = @{ Name = 'LABORATORY NZ';           File = 'LABORATORY_NZ.zip';         Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1215231119906045973/LABORATORY_NZ.zip?ex=6ae8592c&is=6ae707ac&hm=af2b0c9eff80f5de18ceb15c5970996f36e6597890ede5029324d7e055b9442e&' }
-    'Crossbattle'  = @{ Name = 'CROSSBATTLE';             File = 'CROSSBATTLE.rar';           Type = 'GDrive'; Id  = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj' }
-    'Scavenger'    = @{ Name = 'SCAVENGER';               File = 'SCAVENGER.rar';             Type = 'GDrive'; Id  = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle' }
+    'Infected'     = @{ Name = 'INFECTED v1.1';           File = 'INFECTED_v1.1_DISCORD.zip';   Desc = 'Выживание и мутации';          Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1216449065005486251/INFECTED_v1.1_DISCORD.zip?ex=6ae82a39&is=6ae6d8b9&hm=0b0b93a02e8aeb62e58e80fa885c462226d2a0eab59ab606f2f00545e0bd83f0&' }
+    'Blizzard'     = @{ Name = 'OPERATION BLIZZARD';      File = 'OPERATION_BLIZZARD.zip';      Desc = 'Арктика, холод и мутанты';     Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1214709450280140880/OPERATION_BLIZZARD.zip?ex=6ae86d95&is=6ae71c15&hm=ecf6b2151bcc6150ef0fc95ce59eb79677698d5469510927b7ad15a03efdafed&' }
+    'Phasmophobia' = @{ Name = 'PHASMOPHOBIA HALLOWEEN';  File = 'PHASMOPHOBIA_HALLOWEEN.rar';  Desc = 'Хоррор-расследование';         Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/905517032265617409/PHASMOPHOBIA_HALLOWEEN.rar?ex=6ae82734&is=6ae6d5b4&hm=9377702f3624aea35b6cd8b45e4a4d4b6342c6cb6d25ec256a6c012c44ccc790&' }
+    'Slasher'      = @{ Name = 'SLASHER (Redwood)';       File = 'SLASHER_Redwood_.rar';        Desc = 'Маньяк в лагере Редвуд';       Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/897470764582830091/SLASHER_Redwood_.rar?ex=6ae88b48&is=6ae739c8&hm=c5356cf49c0a27b73f5632b07480c0366bf32eff190bf7ebd513ea7a3d124eda&' }
+    'Laboratory'   = @{ Name = 'LABORATORY NZ';           File = 'LABORATORY_NZ.zip';           Desc = 'Секретная лаборатория';        Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1215231119906045973/LABORATORY_NZ.zip?ex=6ae8592c&is=6ae707ac&hm=af2b0c9eff80f5de18ceb15c5970996f36e6597890ede5029324d7e055b9442e&' }
+    'Crossbattle'  = @{ Name = 'CROSSBATTLE';             File = 'CROSSBATTLE.rar';             Desc = 'PvP перестрелки и арена';      Type = 'GDrive'; Id  = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj' }
+    'Scavenger'    = @{ Name = 'SCAVENGER';               File = 'SCAVENGER.rar';               Desc = 'Сбор лута и эвакуация';        Type = 'GDrive'; Id  = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle' }
 }
 
 function Find-PrismJavaInstallations {
     <#
     .SYNOPSIS
-        Сканирует систему на наличие установок Java по аналогии с PrismLauncher JavaUtils.
+        Сканирует систему на наличие установок Java по алгоритмам PrismLauncher JavaUtils.
     #>
     [CmdletBinding()]
     param()
@@ -80,7 +79,7 @@ function Find-PrismJavaInstallations {
     # 2. JAVA_HOME
     if ($env:JAVA_HOME) {
         $candidate = Join-Path -Path $env:JAVA_HOME -ChildPath "bin\java.exe"
-        if (Test-Path -Path $candidate) { $candidates.Add($candidate) }
+        if (Test-Path -LiteralPath $candidate) { $candidates.Add($candidate) }
     }
 
     # 3. Реестр Windows (JavaSoft, AdoptOpenJDK, Eclipse Adoptium, Microsoft)
@@ -106,75 +105,84 @@ function Find-PrismJavaInstallations {
                 $javaHome = if ($props.JavaHome) { $props.JavaHome } elseif ($props.Path) { $props.Path } else { $null }
                 if ($javaHome) {
                     $exe = Join-Path -Path $javaHome -ChildPath "bin\java.exe"
-                    if (Test-Path -Path $exe) { $candidates.Add($exe) }
+                    if (Test-Path -LiteralPath $exe) { $candidates.Add($exe) }
                 }
             }
         }
     }
 
-    # 4. Рантаймы лаунчеров Minecraft (.minecraft\runtime)
-    $mcRuntime = Join-Path -Path $env:APPDATA -ChildPath ".minecraft\runtime"
-    if (Test-Path -Path $mcRuntime) {
-        Get-ChildItem -Path $mcRuntime -Recurse -Filter "java.exe" -ErrorAction SilentlyContinue | ForEach-Object {
-            $candidates.Add($_.FullName)
-        }
-    }
-
-    # 5. Program Files и Oracle javapath
-    $programPaths = @(
-        "$env:ProgramFiles\Java",
+    # 4. Известные пути (Prism Launcher, Modrinth, CurseForge, Common Files, Program Files)
+    $scanFolders = @(
+        "${env:ProgramFiles}\Java",
         "${env:ProgramFiles(x86)}\Java",
-        "$env:ProgramData\Oracle\Java\javapath",
-        "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\java8path"
+        "${env:ProgramFiles}\Eclipse Adoptium",
+        "${env:ProgramFiles}\AdoptOpenJDK",
+        "${env:ProgramFiles}\Microsoft",
+        "${env:ProgramFiles}\BellSoft",
+        "${env:ProgramFiles}\Zulu",
+        "${env:ProgramFiles(x86)}\Common Files\Oracle\Java\java8path",
+        "${env:ProgramFiles}\Common Files\Oracle\Java\javapath",
+        "${env:LOCALAPPDATA}\Programs\PrismLauncher\java",
+        "${env:APPDATA}\PrismLauncher\java",
+        "${env:APPDATA}\.minecraft\runtime\jre-legacy\windows-x64\jre-legacy\bin",
+        "${env:APPDATA}\.minecraft\runtime\jre-legacy\windows-x86\jre-legacy\bin",
+        "${env:APPDATA}\.minecraft\runtime\java-runtime-alpha\windows-x64\java-runtime-alpha\bin"
     )
-    foreach ($dir in $programPaths) {
-        if (Test-Path -Path $dir) {
-            Get-ChildItem -Path $dir -Recurse -Filter "java.exe" -ErrorAction SilentlyContinue | ForEach-Object {
+
+    foreach ($folder in $scanFolders) {
+        if (Test-Path -Path $folder) {
+            Get-ChildItem -Path $folder -Filter "java.exe" -Recurse -Depth 3 -ErrorAction SilentlyContinue | ForEach-Object {
                 $candidates.Add($_.FullName)
             }
         }
     }
 
-    # 6. Валидация каждого кандидата через чистый процесс (Prism JavaChecker)
-    $validJavas = @()
-    $uniquePaths = $candidates | Where-Object { Test-Path -Path $_ } | Select-Object -Unique
+    # Нормализация путей и дедупликация
+    $uniquePaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    foreach ($cand in $candidates) {
+        try {
+            $norm = [System.IO.Path]::GetFullPath($cand)
+            if (Test-Path -LiteralPath $norm) {
+                [void]$uniquePaths.Add($norm)
+            }
+        } catch { }
+    }
 
+    # Проверка свойств каждого найденного java.exe (JavaChecker logic)
+    $results = [System.Collections.Generic.List[PSCustomObject]]::new()
     foreach ($exePath in $uniquePaths) {
         try {
-            $pinfo = New-Object System.Diagnostics.ProcessStartInfo
-            $pinfo.FileName = $exePath
-            $pinfo.Arguments = "-version"
-            $pinfo.RedirectStandardError = $true
-            $pinfo.UseShellExecute = $false
-            $pinfo.CreateNoWindow = $true
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = $exePath
+            $psi.Arguments = "-version"
+            $psi.RedirectStandardError = $true
+            $psi.RedirectStandardOutput = $true
+            $psi.UseShellExecute = $false
+            $psi.CreateNoWindow = $true
 
-            # Очистка окружения от конфликтных флагов
-            $pinfo.EnvironmentVariables.Remove("_JAVA_OPTIONS")
-            $pinfo.EnvironmentVariables.Remove("JAVA_TOOL_OPTIONS")
+            $proc = [System.Diagnostics.Process]::Start($psi)
+            $stderrOutput = $proc.StandardError.ReadToEnd()
+            $proc.WaitForExit(4000)
 
-            $proc = [System.Diagnostics.Process]::Start($pinfo)
-            $output = $proc.StandardError.ReadToEnd()
-            $proc.WaitForExit()
+            $firstLine = ($stderrOutput -split "`r?`n" | Where-Object { $_ -match 'version' } | Select-Object -First 1)
+            $is64Bit = ($stderrOutput -match '64-Bit|x64|amd64')
+            $isJava8 = ($firstLine -match '1\.8\.0' -or $firstLine -match 'version "1\.8')
 
-            $is64Bit = ($output -match '64-Bit')
-            $versionMatch = [regex]::Match($output, 'version "(.*?)"')
-            $versionStr = if ($versionMatch.Success) { $versionMatch.Groups[1].Value } else { "Unknown" }
-            $isJava8 = $versionStr.StartsWith("1.8.")
+            $verString = if ($firstLine -match 'version "([^"]+)"') { $Matches[1] } else { 'Unknown' }
 
-            $validJavas += [PSCustomObject]@{
-                Path     = $exePath
-                Version  = $versionStr
-                Is64Bit  = $is64Bit
-                IsJava8  = $isJava8
-                RawInfo  = ($output -split "`r?`n")[0]
-            }
-        }
-        catch {
-            Write-Verbose "Java check failed for $($exePath)"
+            $results.Add([PSCustomObject]@{
+                Path       = $exePath
+                Version    = $verString
+                IsJava8    = [bool]$isJava8
+                Is64Bit    = [bool]$is64Bit
+                RawDetails = $firstLine
+            })
+        } catch {
+            Write-Verbose "Ошибка тестирования пути $($exePath): $_"
         }
     }
 
-    return $validJavas
+    return $results
 }
 
 function Initialize-ForgeBase {
@@ -190,86 +198,68 @@ function Initialize-ForgeBase {
         [string]$JavaExecutable
     )
 
-    $forgeJarPath = Join-Path -Path $CacheDirectory -ChildPath "forge-$ForgeVersion.jar"
-    $serverJarPath = Join-Path -Path $CacheDirectory -ChildPath "minecraft_server.1.12.2.jar"
-    $librariesDirectory = Join-Path -Path $CacheDirectory -ChildPath "libraries"
+    $installerName = "forge-$ForgeVersion-installer.jar"
+    $universalName = "forge-$ForgeVersion-universal.jar"
+    $serverJarName = "forge-$ForgeVersion.jar"
+    $vanillaServerJar = "minecraft_server.1.12.2.jar"
 
-    $isBaseValid = (Test-Path -Path $forgeJarPath) -and
-                   (Test-Path -Path $serverJarPath) -and
-                   (Test-Path -Path $librariesDirectory)
+    $serverJarPath = Join-Path -Path $CacheDirectory -ChildPath $serverJarName
+    $librariesPath = Join-Path -Path $CacheDirectory -ChildPath "libraries"
 
-    if ($isBaseValid) {
-        Write-Verbose "Общее хранилище Forge валидно: $CacheDirectory"
+    if ((Test-Path -LiteralPath $serverJarPath) -and (Test-Path -LiteralPath $librariesPath)) {
+        Write-Verbose "Базовое ядро Forge 1.12.2 уже развёрнуто в кэше: $CacheDirectory"
         return
     }
 
-    if ($PSCmdlet.ShouldProcess($CacheDirectory, "Создание базового ядра Forge $ForgeVersion")) {
-        Write-Host "Создание центрального хранилища Forge (выполняется один раз на ПК)..." -ForegroundColor Yellow
+    if (-not (Test-Path -LiteralPath $CacheDirectory)) {
+        $null = New-Item -ItemType Directory -Path $CacheDirectory -Force
+    }
 
-        if (-not (Test-Path -Path $CacheDirectory)) {
-            $null = New-Item -ItemType Directory -Path $CacheDirectory -Force
-        }
+    $installerPath = Join-Path -Path $CacheDirectory -ChildPath $installerName
+    if (-not (Test-Path -LiteralPath $installerPath)) {
+        $forgeUrl = "https://maven.minecraftforge.net/net/minecraftforge/forge/$ForgeVersion/$installerName"
+        Write-Host "    • Загрузка официального инсталлятора Forge 1.12.2..." -ForegroundColor Gray
+        Invoke-WebRequest -Uri $forgeUrl -OutFile $installerPath -UseBasicParsing
+    }
 
-        # Фикс org.ow2.asm:asm-debug-all:5.2
-        $asmDirectory = Join-Path -Path $CacheDirectory -ChildPath "libraries\org\ow2\asm\asm-debug-all\5.2"
-        if (-not (Test-Path -Path $asmDirectory)) {
-            $null = New-Item -ItemType Directory -Path $asmDirectory -Force
-        }
-        $asmJar = Join-Path -Path $asmDirectory -ChildPath "asm-debug-all-5.2.jar"
-        if (-not (Test-Path -Path $asmJar)) {
-            Write-Verbose "Загрузка отсутствующей библиотеки asm-debug-all:5.2 из Maven Central..."
-            $downloadParams = @{
-                Uri             = "https://repo1.maven.org/maven2/org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar"
-                OutFile         = $asmJar
-                UseBasicParsing = $true
-            }
-            Invoke-WebRequest @downloadParams
-        }
+    # Исправление бага 404 Forge Maven для библиотеки asm-debug-all:5.2
+    $asmDir = Join-Path -Path $CacheDirectory -ChildPath "libraries\org\ow2\asm\asm-debug-all\5.2"
+    $asmJar = Join-Path -Path $asmDir -ChildPath "asm-debug-all-5.2.jar"
+    if (-not (Test-Path -LiteralPath $asmJar)) {
+        if (-not (Test-Path -LiteralPath $asmDir)) { $null = New-Item -ItemType Directory -Path $asmDir -Force }
+        $asmUrl = "https://repo1.maven.org/maven2/org/ow2/asm/asm-debug-all/5.2/asm-debug-all-5.2.jar"
+        Invoke-WebRequest -Uri $asmUrl -OutFile $asmJar -UseBasicParsing
+    }
 
-        # Фикс net.minecraft:launchwrapper:1.12
-        $launchDir = Join-Path -Path $CacheDirectory -ChildPath "libraries\net\minecraft\launchwrapper\1.12"
-        if (-not (Test-Path -Path $launchDir)) {
-            $null = New-Item -ItemType Directory -Path $launchDir -Force
-        }
-        $launchJar = Join-Path -Path $launchDir -ChildPath "launchwrapper-1.12.jar"
-        if (-not (Test-Path -Path $launchJar)) {
-            Write-Verbose "Загрузка обязательной библиотеки launchwrapper-1.12.jar..."
-            $launchParams = @{
-                Uri             = "https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar"
-                OutFile         = $launchJar
-                UseBasicParsing = $true
-            }
-            Invoke-WebRequest @launchParams
-        }
+    Write-Host "    • Развёртывание ядра и библиотек Forge (фоновый режим)..." -ForegroundColor Gray
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $JavaExecutable
+    $psi.Arguments = "-jar `"$installerPath`" --installServer"
+    $psi.WorkingDirectory = $CacheDirectory
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.CreateNoWindow = $true
 
-        $installerUrl = "https://maven.minecraftforge.net/net/minecraftforge/forge/$ForgeVersion/forge-$ForgeVersion-installer.jar"
-        $installerFilePath = Join-Path -Path $CacheDirectory -ChildPath "forge-installer.jar"
-        
-        Write-Host "Загрузка инсталлера Forge..." -ForegroundColor Yellow
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-WebRequest -Uri $installerUrl -OutFile $installerFilePath -UseBasicParsing
+    $process = [System.Diagnostics.Process]::Start($psi)
+    $null = $process.StandardOutput.ReadToEnd()
+    $process.WaitForExit(180000)
 
-        Write-Host "Распаковка библиотек ядра..." -ForegroundColor Yellow
-        Push-Location -Path $CacheDirectory
-        try {
-            $processParams = @{
-                FilePath     = $JavaExecutable
-                ArgumentList = "-jar `"$installerFilePath`" --installServer"
-                Wait         = $true
-                PassThru     = $true
-                NoNewWindow  = $true
-            }
-            $installProcess = Start-Process @processParams
-            if ($installProcess.ExitCode -ne 0) {
-                throw [System.InvalidOperationException]::new("Процесс установки Forge завершился с кодом: $($installProcess.ExitCode)")
-            }
-        }
-        finally {
-            Pop-Location
-            Remove-Item -Path $installerFilePath -Force -ErrorAction SilentlyContinue
-        }
+    if ($process.ExitCode -ne 0) {
+        throw "Сбой установки Forge Installer (код завершения: $($process.ExitCode))."
+    }
 
-        Write-Host "Базовое ядро Forge успешно инициализировано." -ForegroundColor Green
+    $universalPath = Join-Path -Path $CacheDirectory -ChildPath $universalName
+    if ((Test-Path -LiteralPath $universalPath) -and (-not (Test-Path -LiteralPath $serverJarPath))) {
+        Rename-Item -Path $universalPath -NewName $serverJarName -Force
+    }
+
+    # Проверка launchwrapper-1.12.jar
+    $launchWrapperPath = Join-Path -Path $CacheDirectory -ChildPath "libraries\net\minecraft\launchwrapper\1.12\launchwrapper-1.12.jar"
+    if (-not (Test-Path -LiteralPath $launchWrapperPath)) {
+        $lwDir = Split-Path $launchWrapperPath
+        if (-not (Test-Path -LiteralPath $lwDir)) { $null = New-Item -ItemType Directory -Path $lwDir -Force }
+        Invoke-WebRequest -Uri "https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar" -OutFile $launchWrapperPath -UseBasicParsing
     }
 }
 
@@ -291,7 +281,7 @@ function Expand-ArchivePackage {
     $sevenZip = (Get-Command -Name "7z.exe" -ErrorAction SilentlyContinue).Source
     if (-not $sevenZip) {
         $common = @("${env:ProgramFiles}\7-Zip\7z.exe", "${env:ProgramFiles(x86)}\7-Zip\7z.exe")
-        foreach ($c in $common) { if (Test-Path $c) { $sevenZip = $c; break } }
+        foreach ($c in $common) { if (Test-Path -LiteralPath $c) { $sevenZip = $c; break } }
     }
     if ($sevenZip) {
         & $sevenZip x "$ArchiveFilePath" "-o$DestinationPath" -y | Out-Null
@@ -299,7 +289,7 @@ function Expand-ArchivePackage {
     }
 
     $winrar = "${env:ProgramFiles}\WinRAR\WinRAR.exe"
-    if (Test-Path $winrar) {
+    if (Test-Path -LiteralPath $winrar) {
         & $winrar x -ibck "$ArchiveFilePath" "$DestinationPath\"
         return ($LASTEXITCODE -eq 0)
     }
@@ -309,21 +299,19 @@ function Expand-ArchivePackage {
         if ($LASTEXITCODE -eq 0) { return $true }
     }
 
-    # Резервный архиватор: портативный 7za.exe (скачивается автоматически, если на ПК нет архиватора)
+    # Резервный архиватор: портативный 7za.exe (скачивается автоматически, если на ПК нет 7-Zip)
     $portable7zDir = Join-Path -Path $env:USERPROFILE -ChildPath ".mc_forge_base_1.12.2"
     $portable7z = Join-Path -Path $portable7zDir -ChildPath "7za.exe"
     if (-not (Test-Path -LiteralPath $portable7z)) {
         try {
-            Write-Host "Загрузка автономного модуля распаковки .rar архивов..." -ForegroundColor Yellow
+            Write-Host "    • Загрузка автономного распаковщика .rar архивов..." -ForegroundColor Gray
             $7zZipUrl = "https://www.7-zip.org/a/7za920.zip"
             $temp7zZip = Join-Path -Path $env:TEMP -ChildPath "7za920.zip"
             if (-not (Test-Path -LiteralPath $portable7zDir)) { $null = New-Item -ItemType Directory -Path $portable7zDir -Force }
             Invoke-WebRequest -Uri $7zZipUrl -OutFile $temp7zZip -UseBasicParsing
             Expand-Archive -Path $temp7zZip -DestinationPath $portable7zDir -Force
             Remove-Item -Path $temp7zZip -Force -ErrorAction SilentlyContinue
-        } catch {
-            Write-Verbose "Не удалось скачать 7za.exe: $_"
-        }
+        } catch { }
     }
     if (Test-Path -LiteralPath $portable7z) {
         & $portable7z x "$ArchiveFilePath" "-o$DestinationPath" -y | Out-Null
@@ -361,8 +349,8 @@ function Set-ServerConfiguration {
     }
 
     $currentSettings = @{}
-    if (Test-Path -Path $serverPropertiesPath) {
-        Get-Content -Path $serverPropertiesPath | ForEach-Object {
+    if (Test-Path -LiteralPath $serverPropertiesPath) {
+        Get-Content -LiteralPath $serverPropertiesPath | ForEach-Object {
             $line = $_.Trim()
             if ($line -and -not $line.StartsWith('#') -and $line.Contains('=')) {
                 $key, $value = $line -split '=', 2
@@ -376,11 +364,11 @@ function Set-ServerConfiguration {
     }
 
     if ($PSCmdlet.ShouldProcess($serverPropertiesPath, "Обновление параметров server.properties")) {
-        $propertiesLines = @("# Minecraft Server Properties (Configured by setup.ps1)")
+        $propertiesLines = @("# Minecraft Server Properties (Configured by nzscripts)")
         foreach ($key in $currentSettings.Keys) {
             $propertiesLines += "$key=$($currentSettings[$key])"
         }
-        $propertiesLines | Set-Content -Path $serverPropertiesPath -Encoding UTF8
+        $propertiesLines | Set-Content -LiteralPath $serverPropertiesPath -Encoding UTF8
     }
 }
 
@@ -395,21 +383,29 @@ function Invoke-ModeInstallation {
     )
 
     $archiveName = $ModeConfig.File
-    $searchCandidates = @(
-        (Join-Path -Path $TargetDirectory -ChildPath $archiveName),
-        (Join-Path -Path $TargetDirectory -ChildPath "builds_cache\$archiveName"),
-        (Join-Path -Path $PSScriptRoot -ChildPath "builds_cache\$archiveName"),
-        (Join-Path -Path "C:\Users\Seilce\Desktop\ss\builds_cache" -ChildPath $archiveName)
-    )
+
+    # Безопасный поиск существующего кэша (без ошибок Join-Path при пустом $PSScriptRoot)
+    $searchCandidates = [System.Collections.Generic.List[string]]::new()
+    if ($TargetDirectory) {
+        $searchCandidates.Add((Join-Path -Path $TargetDirectory -ChildPath $archiveName))
+        $searchCandidates.Add((Join-Path -Path $TargetDirectory -ChildPath "builds_cache\$archiveName"))
+    }
+    if ($PSScriptRoot) {
+        $searchCandidates.Add((Join-Path -Path $PSScriptRoot -ChildPath "builds_cache\$archiveName"))
+        $searchCandidates.Add((Join-Path -Path $PSScriptRoot -ChildPath $archiveName))
+    }
+    $localDesktopCache = "C:\Users\Seilce\Desktop\ss\builds_cache\$archiveName"
+    if (Test-Path -LiteralPath $localDesktopCache) { $searchCandidates.Add($localDesktopCache) }
+
     $archiveFullPath = $searchCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 
     if (-not $archiveFullPath) {
         $archiveFullPath = Join-Path -Path $TargetDirectory -ChildPath $archiveName
-        Write-Host "Загрузка архива режима '$($ModeConfig.Name)'..." -ForegroundColor Yellow
+        Write-Host "    • Загрузка пакета '$($ModeConfig.Name)'..." -ForegroundColor Yellow
         $hasCurl = [bool](Get-Command -Name "curl.exe" -ErrorAction SilentlyContinue)
 
         $downloaded = $false
-        # 1. Попытка загрузки из GitHub Releases
+        # 1. Попытка загрузки из GitHub Releases (быстрый CDN, постоянные ссылки)
         if ($GitHubRepo) {
             $githubReleaseUrl = "https://github.com/$GitHubRepo/releases/download/$ReleaseTag/$archiveName"
             try {
@@ -453,10 +449,10 @@ function Invoke-ModeInstallation {
     $null = New-Item -ItemType Directory -Path $tempExtractPath -Force
 
     try {
-        Write-Host "Распаковка содержимого режима..." -ForegroundColor Yellow
+        Write-Host "    • Распаковка содержимого режима..." -ForegroundColor Gray
         $isExtracted = Expand-ArchivePackage -ArchiveFilePath $archiveFullPath -DestinationPath $tempExtractPath
         if (-not $isExtracted) {
-            Write-Warning "Не удалось автоматически распаковать архив. Установите 7-Zip или распакуйте вручную."
+            Write-Warning "Не удалось распаковать архив режима. Установите 7-Zip или распакуйте архив вручную."
             return
         }
 
@@ -468,7 +464,6 @@ function Invoke-ModeInstallation {
             $worldSourceDir = $levelDatFile.Directory
             $worldFolderName = $worldSourceDir.Name
 
-            # Если имя папки было просто 'saves' или не определено, используем 'world'
             if ($worldFolderName -ieq 'saves' -or $worldFolderName -ieq 'temp_mode_extract') {
                 $worldFolderName = 'world'
             }
@@ -477,9 +472,8 @@ function Invoke-ModeInstallation {
             if (Test-Path -LiteralPath $worldTarget) { Remove-Item -LiteralPath $worldTarget -Recurse -Force }
             Copy-Item -LiteralPath $worldSourceDir.FullName -Destination $worldTarget -Recurse -Force
 
-            # Обновляем server.properties, чтобы сервер загружал именно этот мир
             Set-ServerConfiguration -TargetDirectory $TargetDirectory -LevelName $worldFolderName
-            Write-Host "Карта '$worldFolderName' перенесена, в server.properties установлен level-name=$worldFolderName." -ForegroundColor Green
+            Write-Host "    • Карта '$worldFolderName' установлена (server.properties: level-name=$worldFolderName)" -ForegroundColor Green
         }
 
         # 2. Моды (с автоматической фильтрацией OptiFine, BetterFoliage, tlskincape)
@@ -505,6 +499,7 @@ function Invoke-ModeInstallation {
                 Where-Object { -not $worldSourceDir -or -not $_.FullName.StartsWith($worldSourceDir.FullName, [System.StringComparison]::OrdinalIgnoreCase) }
         }
 
+        $copiedModsCount = 0
         foreach ($jar in $allJarFiles) {
             $isClientOnly = $false
             foreach ($pattern in $clientOnlyFilters) {
@@ -515,11 +510,12 @@ function Invoke-ModeInstallation {
             }
             if (-not $isClientOnly) {
                 Copy-Item -LiteralPath $jar.FullName -Destination $modsTarget -Force
+                $copiedModsCount++
             }
         }
-        Write-Host "Моды скопированы в 'mods' (клиентские моды отфильтрованы)." -ForegroundColor Green
+        Write-Host "    • Моды установлены: $copiedModsCount шт. (OptiFine/BetterFoliage отфильтрованы)" -ForegroundColor Green
 
-        # 3. Корневые контент-паки оружия/моделей (ModularWarfare, Flan, CustomNPCs), строго ВНЕ папки мира
+        # 3. Корневые контент-паки оружия (ModularWarfare, Flan, CustomNPCs), строго ВНЕ папки мира
         $contentPackNames = @('ModularWarfare', 'Flan', 'customnpcs')
         foreach ($folderName in $contentPackNames) {
             $foundPack = Get-ChildItem -LiteralPath $tempExtractPath -Recurse -Directory |
@@ -533,7 +529,7 @@ function Invoke-ModeInstallation {
                 $destFolder = Join-Path -Path $TargetDirectory -ChildPath $folderName
                 if (Test-Path -LiteralPath $destFolder) { Remove-Item -LiteralPath $destFolder -Recurse -Force }
                 Copy-Item -LiteralPath $foundPack.FullName -Destination $destFolder -Recurse -Force
-                Write-Host "Контент-пак '$folderName' скопирован в корень сервера." -ForegroundColor Green
+                Write-Host "    • Контент-пак оружия '$folderName' установлен в корень сервера" -ForegroundColor Green
             }
         }
 
@@ -551,7 +547,7 @@ function Invoke-ModeInstallation {
             Get-ChildItem -LiteralPath $configSource.FullName | ForEach-Object {
                 Copy-Item -LiteralPath $_.FullName -Destination $configTarget -Recurse -Force
             }
-            Write-Host "Конфигурации скопированы в папку 'config'." -ForegroundColor Green
+            Write-Host "    • Конфигурации модов скопированы в 'config'" -ForegroundColor Green
         }
 
         # 5. Ресурспаки для игроков (если есть в архиве режима)
@@ -568,7 +564,7 @@ function Invoke-ModeInstallation {
             Get-ChildItem -LiteralPath $rpSource.FullName | ForEach-Object {
                 Copy-Item -LiteralPath $_.FullName -Destination $rpTarget -Recurse -Force
             }
-            Write-Host "Ресурспак режима сохранён в папку 'resourcepacks' (передайте его игрокам)!" -ForegroundColor Cyan
+            Write-Host "    • Ресурспак режима извлечён в папку 'resourcepacks' (передайте его друзьям)" -ForegroundColor Cyan
         }
     }
     finally {
@@ -577,119 +573,141 @@ function Invoke-ModeInstallation {
 }
 
 # ====================================================================
-# Точка входа скрипта
+# Точка входа скрипта (с защитой от внезапного закрытия консоли)
 # ====================================================================
 
-Write-Host "Поиск установленных сред Java (алгоритм Prism Launcher)..." -ForegroundColor Yellow
-$foundJavas = Find-PrismJavaInstallations
+try {
+    Clear-Host
+    Write-Host "╔══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "║              🎮  NAZZY STORY MODES — MINECRAFT FORGE 1.12.2 SERVER                   ║" -ForegroundColor Cyan
+    Write-Host "║                Автоматический установщик сервера для Radmin VPN                      ║" -ForegroundColor DarkCyan
+    Write-Host "╚══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 
-# Приоритет: Java 8 (64-bit)
-$selectedJava = $foundJavas |
-    Where-Object { $_.IsJava8 -and $_.Is64Bit } |
-    Select-Object -First 1
+    # [1/5] Поиск Java
+    Write-Host "`n[1/5] 🔍 Сканирование установленных сред Java (алгоритм Prism Launcher)..." -ForegroundColor Yellow
+    $foundJavas = Find-PrismJavaInstallations
 
-if (-not $selectedJava) {
-    # Запасной вариант: любая Java 8
-    $selectedJava = $foundJavas | Where-Object { $_.IsJava8 } | Select-Object -First 1
-}
+    # Приоритет: Java 8 (64-bit)
+    $selectedJava = $foundJavas |
+        Where-Object { $_.IsJava8 -and $_.Is64Bit } |
+        Select-Object -First 1
 
-if (-not $selectedJava) {
-    Write-Host "`n[ОШИБКА] Подходящая Java 8 не найдена!" -ForegroundColor Red
-    if ($foundJavas.Count -gt 0) {
-        Write-Host "В системе найдены неподходящие версии Java:" -ForegroundColor Yellow
-        foreach ($j in $foundJavas) {
-            Write-Host "  - $($j.Path) ($($j.Version), 64-bit: $($j.Is64Bit))" -ForegroundColor Gray
+    if (-not $selectedJava) {
+        $selectedJava = $foundJavas | Where-Object { $_.IsJava8 } | Select-Object -First 1
+    }
+
+    if (-not $selectedJava) {
+        Write-Host "`n[!] Java 8 (64-bit) не найдена в системе!" -ForegroundColor Red
+        if ($foundJavas.Count -gt 0) {
+            Write-Host "Найденные неподходящие версии Java:" -ForegroundColor Yellow
+            foreach ($j in $foundJavas) {
+                Write-Host "  • $($j.Path) ($($j.Version), 64-bit: $($j.Is64Bit))" -ForegroundColor Gray
+            }
         }
-        Write-Host "Для сервера Forge 1.12.2 строго требуется Java 8 (64-bit)." -ForegroundColor Yellow
+        Write-Host "`nДля работы Forge 1.12.2 требуется именно Java 8 (64-bit)." -ForegroundColor Yellow
+        Write-Host "Скачайте установщик: https://www.java.com/en/download/manual.jsp" -ForegroundColor Cyan
+        Write-Host "`nНажмите любую клавишу для выхода..." -ForegroundColor Gray
+        [Console]::ReadKey($true) | Out-Null
+        exit 1
     }
-    Write-Host "Скачать Java 8 (Windows Offline 64-bit): https://www.java.com/en/download/manual.jsp" -ForegroundColor Cyan
-    Pause
-    exit 1
-}
 
-Write-Host "Выбрана Java: $($selectedJava.Path)" -ForegroundColor Green
-Write-Host "Версия: $($selectedJava.Version) | 64-Bit: $($selectedJava.Is64Bit)" -ForegroundColor Gray
+    Write-Host "  • Выбрана Java: $($selectedJava.Path)" -ForegroundColor Green
+    Write-Host "  • Версия:       $($selectedJava.Version) (64-Bit: $($selectedJava.Is64Bit))" -ForegroundColor Gray
 
-# Выбор режима
-# Проверка запуска через Win + R (когда рабочая директория - профиль пользователя или System32)
-if ($ServerPath -ieq $env:USERPROFILE -or $ServerPath -ieq "$env:SystemRoot\System32" -or $ServerPath -ieq $env:SystemRoot) {
-    $desktopPath = [Environment]::GetFolderPath('Desktop')
-    $defaultServerDir = Join-Path -Path $desktopPath -ChildPath "NazzyServer"
+    # [2/5] Проверка папки сервера (Win + R защита)
+    Write-Host "`n[2/5] 📁 Определение директории сервера..." -ForegroundColor Yellow
+    if ($ServerPath -ieq $env:USERPROFILE -or $ServerPath -ieq "$env:SystemRoot\System32" -or $ServerPath -ieq $env:SystemRoot) {
+        $desktopPath = [Environment]::GetFolderPath('Desktop')
+        $defaultServerDir = Join-Path -Path $desktopPath -ChildPath "NazzyServer"
 
-    Write-Host "`n[Win + R] Обнаружен запуск из диалогового окна 'Выполнить'." -ForegroundColor Yellow
-    Write-Host "Папка сервера по умолчанию: $defaultServerDir" -ForegroundColor Cyan
-    $customInput = Read-Host "Нажмите Enter для создания сервера в этой папке (или укажите свой путь)"
-    if ($customInput -and $customInput.Trim()) {
-        $ServerPath = $customInput.Trim().Replace('"', '')
+        Write-Host "  • Обнаружен запуск из диалогового окна 'Выполнить' (Win + R)." -ForegroundColor DarkYellow
+        Write-Host "  • Рекомендуемая папка: $defaultServerDir" -ForegroundColor Cyan
+        $customInput = Read-Host "`n  Нажмите Enter для создания сервера в этой папке (или укажите свой путь)"
+        if ($customInput -and $customInput.Trim()) {
+            $ServerPath = $customInput.Trim().Replace('"', '')
+        } else {
+            $ServerPath = $defaultServerDir
+        }
+    }
+    Write-Host "  • Папка сервера: $ServerPath" -ForegroundColor Green
+
+    # [3/5] Выбор режима
+    $chosenModeConfig = $null
+    if ($Mode -eq 'Interactive') {
+        Write-Host "`n[3/5] 🎮 Выберите сюжетный режим для установки:" -ForegroundColor Yellow
+        Write-Host "┌───┬──────────────────────────┬─────────────────────────────┬─────────────────┐" -ForegroundColor DarkGray
+        Write-Host "│ № │ РЕЖИМ                    │ ОПИСАНИЕ                    │ ОСОБЕННОСТИ     │" -ForegroundColor Cyan
+        Write-Host "├───┼──────────────────────────┼─────────────────────────────┼─────────────────┤" -ForegroundColor DarkGray
+        Write-Host "│ 1 │ INFECTED v1.1            │ Выживание и мутации         │ Голосовой чат   │" -ForegroundColor White
+        Write-Host "│ 2 │ OPERATION BLIZZARD       │ Арктика, холод и мутанты    │ Мод на оружие   │" -ForegroundColor White
+        Write-Host "│ 3 │ PHASMOPHOBIA HALLOWEEN   │ Хоррор-расследование        │ Голосовой чат   │" -ForegroundColor White
+        Write-Host "│ 4 │ SLASHER (Redwood)        │ Маньяк в лагере Редвуд      │ Голосовой чат   │" -ForegroundColor White
+        Write-Host "│ 5 │ LABORATORY NZ            │ Секретная лаборатория       │ Мод на оружие   │" -ForegroundColor White
+        Write-Host "│ 6 │ CROSSBATTLE              │ PvP перестрелки и арена     │ Мод на оружие   │" -ForegroundColor White
+        Write-Host "│ 7 │ SCAVENGER                │ Сбор лута и эвакуация       │ Мод на оружие   │" -ForegroundColor White
+        Write-Host "│ 0 │ Чистый сервер            │ Forge 1.12.2 без модов      │ Чистый мир      │" -ForegroundColor Gray
+        Write-Host "└───┴──────────────────────────┴─────────────────────────────┴─────────────────┘" -ForegroundColor DarkGray
+
+        $userInput = Read-Host "`nВведите номер режима [1-7] (по умолчанию: 0)"
+        $modeKeys = @('Infected', 'Blizzard', 'Phasmophobia', 'Slasher', 'Laboratory', 'Crossbattle', 'Scavenger')
+        if ($userInput -match '^[1-7]$') {
+            $selectedKey = $modeKeys[[int]$userInput - 1]
+            $chosenModeConfig = $Script:AvailableModes[$selectedKey]
+            Write-Host "`n  • Выбран режим: $($chosenModeConfig.Name) ($($chosenModeConfig.Desc))" -ForegroundColor Green
+        } else {
+            Write-Host "`n  • Выбран чистый сервер Forge 1.12.2." -ForegroundColor Gray
+        }
+    } elseif ($Mode -ne 'None') {
+        $chosenModeConfig = $Script:AvailableModes[$Mode]
+        Write-Host "`n[3/5] 🎮 Режим передан через аргументы: $($chosenModeConfig.Name)" -ForegroundColor Green
+    }
+
+    # [4/5] Развёртывание Forge 1.12.2
+    Write-Host "`n[4/5] ⚙️ Развёртывание ядра Forge 1.12.2 и библиотек..." -ForegroundColor Yellow
+    $centralCache = Join-Path -Path $env:USERPROFILE -ChildPath ".mc_forge_base_1.12.2"
+    $forgeVersionString = "1.12.2-14.23.5.2860"
+    $forgeJarName = "forge-$forgeVersionString.jar"
+
+    Initialize-ForgeBase -CacheDirectory $centralCache -ForgeVersion $forgeVersionString -JavaExecutable $selectedJava.Path
+
+    if (-not (Test-Path -LiteralPath $ServerPath)) {
+        $null = New-Item -ItemType Directory -Path $ServerPath -Force
+    }
+
+    Copy-Item -LiteralPath (Join-Path $centralCache $forgeJarName) -Destination $ServerPath -Force
+    Copy-Item -LiteralPath (Join-Path $centralCache "minecraft_server.1.12.2.jar") -Destination $ServerPath -Force
+
+    $targetLibraries = Join-Path -Path $ServerPath -ChildPath "libraries"
+    if (-not (Test-Path -LiteralPath $targetLibraries)) {
+        $null = New-Item -ItemType Directory -Path $targetLibraries -Force
+    }
+    Copy-Item -LiteralPath (Get-ChildItem -LiteralPath (Join-Path $centralCache "libraries")).FullName -Destination $targetLibraries -Recurse -Force
+    Write-Host "  • Ядро Forge 1.12.2 и библиотеки успешно скопированы" -ForegroundColor Green
+
+    Set-ServerConfiguration -TargetDirectory $ServerPath
+
+    # [5/5] Установка режима
+    Write-Host "`n[5/5] 📦 Установка модов, карты и файлов конфигурации..." -ForegroundColor Yellow
+    if ($chosenModeConfig) {
+        Invoke-ModeInstallation -ModeConfig $chosenModeConfig -TargetDirectory $ServerPath
     } else {
-        $ServerPath = $defaultServerDir
+        $modsFolder = Join-Path -Path $ServerPath -ChildPath "mods"
+        if (-not (Test-Path -LiteralPath $modsFolder)) { $null = New-Item -ItemType Directory -Path $modsFolder }
     }
-}
 
-$chosenModeConfig = $null
-if ($Mode -eq 'Interactive') {
-    Write-Host "`nДоступные режимы для установки:" -ForegroundColor White
-    $modeKeys = @('Infected', 'Blizzard', 'Phasmophobia', 'Slasher', 'Laboratory', 'Crossbattle', 'Scavenger')
-    for ($i = 0; $i -lt $modeKeys.Count; $i++) {
-        $key = $modeKeys[$i]
-        Write-Host "  [$($i + 1)] $($Script:AvailableModes[$key].Name)" -ForegroundColor Cyan
-    }
-    Write-Host "  [0] Чистый сервер (без модов и карты)" -ForegroundColor Gray
+    # Генерация start.bat с жёстко привязанной Java 8 и флагом автоподтверждения FML
+    $batPath = Join-Path -Path $ServerPath -ChildPath "start.bat"
+    $escapedJavaPath = $selectedJava.Path.Replace('"', '')
 
-    $userInput = Read-Host "`nВведите номер режима (0 по умолчанию)"
-    if ($userInput -match '^[1-7]$') {
-        $selectedKey = $modeKeys[[int]$userInput - 1]
-        $chosenModeConfig = $Script:AvailableModes[$selectedKey]
-        Write-Host "`nВыбран режим: $($chosenModeConfig.Name)" -ForegroundColor Green
-    } else {
-        Write-Host "`nВыбран чистый сервер." -ForegroundColor Gray
-    }
-} elseif ($Mode -ne 'None') {
-    $chosenModeConfig = $Script:AvailableModes[$Mode]
-}
-
-# Инициализация центральной базы Forge
-$centralCache = Join-Path -Path $env:USERPROFILE -ChildPath ".mc_forge_base_1.12.2"
-$forgeVersionString = "1.12.2-14.23.5.2860"
-$forgeJarName = "forge-$forgeVersionString.jar"
-
-Initialize-ForgeBase -CacheDirectory $centralCache -ForgeVersion $forgeVersionString -JavaExecutable $selectedJava.Path
-
-# Копирование ядра и библиотек
-if (-not (Test-Path -LiteralPath $ServerPath)) {
-    $null = New-Item -ItemType Directory -Path $ServerPath -Force
-}
-
-Write-Host "`nРазвёртывание ядра Forge в целевую директорию..." -ForegroundColor Yellow
-Copy-Item -LiteralPath (Join-Path $centralCache $forgeJarName) -Destination $ServerPath -Force
-Copy-Item -LiteralPath (Join-Path $centralCache "minecraft_server.1.12.2.jar") -Destination $ServerPath -Force
-
-$targetLibraries = Join-Path -Path $ServerPath -ChildPath "libraries"
-if (-not (Test-Path -LiteralPath $targetLibraries)) {
-    $null = New-Item -ItemType Directory -Path $targetLibraries -Force
-}
-Copy-Item -LiteralPath (Get-ChildItem -LiteralPath (Join-Path $centralCache "libraries")).FullName -Destination $targetLibraries -Recurse -Force
-Write-Host "Ядро и библиотеки развёрнуты." -ForegroundColor Green
-
-Set-ServerConfiguration -TargetDirectory $ServerPath
-
-if ($chosenModeConfig) {
-    Invoke-ModeInstallation -ModeConfig $chosenModeConfig -TargetDirectory $ServerPath
-} else {
-    $modsFolder = Join-Path -Path $ServerPath -ChildPath "mods"
-    if (-not (Test-Path -Path $modsFolder)) { $null = New-Item -ItemType Directory -Path $modsFolder }
-}
-
-# Генерация start.bat с жёстко привязанной Java 8 (как в Prism Launcher)
-$batPath = Join-Path -Path $ServerPath -ChildPath "start.bat"
-$escapedJavaPath = $selectedJava.Path.Replace('"', '')
-
-$startScriptContent = @"
+    $startScriptContent = @"
 @echo off
 chcp 65001 >nul
 title Minecraft Server 1.12.2
 set "JAVA_BIN=$escapedJavaPath"
-echo Запуск сервера Forge 1.12.2 (автоподтверждение FML включено)...
+echo ========================================================
+echo Запуск сервера Forge 1.12.2...
+echo (Автоподтверждение FML включено)
+echo ========================================================
 "%JAVA_BIN%" -Xms${MinRamGB}G -Xmx${MaxRamGB}G -Dfml.queryResult=confirm -jar $forgeJarName nogui
 if %ERRORLEVEL% NEQ 0 (
     echo.
@@ -698,19 +716,37 @@ if %ERRORLEVEL% NEQ 0 (
 )
 pause
 "@
-Set-Content -Path $batPath -Value $startScriptContent -Encoding UTF8
+    Set-Content -LiteralPath $batPath -Value $startScriptContent -Encoding UTF8
 
-Write-Host "`n========================================================" -ForegroundColor Cyan
-Write-Host "  Сервер готов к запуску! Файл запуска: start.bat" -ForegroundColor Green
-Write-Host "========================================================" -ForegroundColor Cyan
+    # Красивая карточка завершения
+    $modeTitle = if ($chosenModeConfig) { $chosenModeConfig.Name } else { "Чистый сервер" }
+    Write-Host "`n╔══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
+    Write-Host "║                         СЕРВЕР УСПЕШНО УСТАНОВЛЕН И ГОТОВ!                           ║" -ForegroundColor Green
+    Write-Host "╠══════════════════════════════════════════════════════════════════════════════════════╣" -ForegroundColor Green
+    Write-Host "║  • Установленный режим: $modeTitle" -ForegroundColor White
+    Write-Host "║  • Директория сервера:  $ServerPath" -ForegroundColor White
+    Write-Host "║  • Файл для запуска:    start.bat" -ForegroundColor White
+    Write-Host "║  • Для игры по сети:    Запустите Radmin VPN и передайте друзьям свой IP:25565       ║" -ForegroundColor DarkCyan
+    Write-Host "╚══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Green
 
-if ($Mode -eq 'Interactive') {
-    $runNow = Read-Host "`nЗапустить сервер прямо сейчас? (Y/N, Enter = Y)"
-    if ($runNow -eq '' -or $runNow -ieq 'Y' -or $runNow -ieq 'Д') {
-        Write-Host "Запуск сервера..." -ForegroundColor Green
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$batPath`"" -WorkingDirectory $ServerPath
-    } else {
-        Write-Host "Для запуска сервера откройте файл: $batPath" -ForegroundColor Cyan
-        Pause
+    if ($Mode -eq 'Interactive') {
+        Write-Host "`n  [Enter] Запустить сервер прямо сейчас" -ForegroundColor Cyan
+        Write-Host "  [Q]     Выйти (запустите позже через start.bat)" -ForegroundColor Gray
+        $action = Read-Host "  Ваш выбор"
+        if ($action -notmatch '^[qQйЙ]$') {
+            Write-Host "`nЗапуск сервера в отдельном окне..." -ForegroundColor Green
+            Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$batPath`"" -WorkingDirectory $ServerPath
+        } else {
+            Write-Host "`nСервер сохранён в: $ServerPath" -ForegroundColor Gray
+        }
     }
+} catch {
+    Write-Host "`n╔══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Red
+    Write-Host "║                                ОШИБКА УСТАНОВКИ                                      ║" -ForegroundColor Red
+    Write-Host "╚══════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Red
+    Write-Host "  • Сообщение: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host "  • Строка:    $($_.InvocationInfo.ScriptLineNumber)" -ForegroundColor Gray
+    Write-Host "`nНажмите любую клавишу для закрытия окна..." -ForegroundColor Yellow
+    [Console]::ReadKey($true) | Out-Null
+    exit 1
 }
