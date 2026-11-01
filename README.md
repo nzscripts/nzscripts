@@ -1,4 +1,4 @@
-﻿# 🎮 Minecraft Forge 1.12.2 — Nazzy Story Modes Server Installer
+# 🎮 Minecraft Forge 1.12.2 — Nazzy Story Modes Server Installer
 
 Автоматический установщик и менеджер выделенного сервера **Minecraft Forge 1.12.2** для прохождения сюжетных карт и режимов от **Nazzy** (Infected, Blizzard, Phasmophobia, Slasher, Laboratory, Crossbattle, Scavenger) для совместной игры через **Radmin VPN**.
 
@@ -6,14 +6,27 @@
 
 ## ⚡ Быстрая установка в 1 команду
 
-Откройте **PowerShell** в любой папке, где хотите создать сервер, и вставьте команду:
+Нажмите `Win + R` на клавиатуре и вставьте команду (или выполните её в терминале **PowerShell**):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/nzscripts/nzscripts/refs/heads/main/script.ps1 | iex"
+powershell -NoExit -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/nzscripts/nzscripts/refs/heads/main/script.ps1 | iex"
 ```
 
 > [!TIP]
 > Команда автоматически проверит наличие **Java 8 (64-bit)** (по алгоритмам Prism Launcher), развернёт ядро Forge 1.12.2, предложит меню выбора режима (1–7), отфильтрует несовместимые клиентские моды, установит сюжетную карту, синхронизирует `server.properties` и сгенерирует готовый `start.bat`.
+> При запуске через `Win + R` сервер автоматически разворачивается на Рабочем столе в папке `Desktop\NazzyServer`.
+
+---
+
+## 📐 Стандарты разработки и качество кода
+Скрипт полностью переработан в соответствии со стандартами [PowerShell Practice and Style Guide (PoshCode)](https://github.com/PoshCode/PowerShellPracticeAndStyle):
+- **Одобренные глаголы и единственное число сущностей:** `Find-PrismJavaInstallation`, `Initialize-ForgeBase`, `Expand-ArchivePackage`, `Set-ServerConfiguration`, `Install-StoryMode`.
+- **Никаких псевдонимов (No Aliases):** Полные имена командлетов (`Where-Object`, `Select-Object`, `Get-ChildItem`, `Copy-Item`, `Remove-Item`).
+- **Нулевой оверхед конвейера:** Замена `| Out-Null` на высокопроизводительные языковые конструкции `$null = ...` и `[void]`.
+- **Строгая безопасность сравнений:** `$null` всегда слева (`$null -eq $var`, `$null -ne $var`).
+- **Отсутствие хардкода:** Все пути вычисляются динамически через `${env:UserProfile}`, `[Environment]::GetFolderPath('Desktop')` и `$env:TEMP`.
+- **Встроенная документация (CBH):** Полный блок `.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`, `.OUTPUTS`, `.NOTES`.
+- **One True Brace Style (OTBS):** Единый отступ в 4 пробела и корректная расстановка фигурных скобок.
 
 ---
 
