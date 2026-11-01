@@ -614,21 +614,46 @@ try {
     Write-Host "  • Выбрана Java: $($selectedJava.Path)" -ForegroundColor Green
     Write-Host "  • Версия:       $($selectedJava.Version) (64-Bit: $($selectedJava.Is64Bit))" -ForegroundColor Gray
 
-    # [2/5] Проверка папки сервера (Win + R защита)
+    # [2/5] Проверка папки сервера (защита от записи в системные папки Windows при запуске из Win+R)
     Write-Host "`n[2/5] 📁 Определение директории сервера..." -ForegroundColor Yellow
-    if ($ServerPath -ieq $env:USERPROFILE -or $ServerPath -ieq "$env:SystemRoot\System32" -or $ServerPath -ieq $env:SystemRoot) {
+    $isSystemOrProtected = (
+        $ServerPath.StartsWith($env:SystemRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+        $ServerPath.StartsWith("${env:ProgramFiles}", [System.StringComparison]::OrdinalIgnoreCase) -or
+        (${env:ProgramFiles(x86)} -and $ServerPath.StartsWith("${env:ProgramFiles(x86)}", [System.StringComparison]::OrdinalIgnoreCase)) -or
+        $ServerPath -ieq $env:USERPROFILE
+    )
+
+    if ($isSystemOrProtected) {
         $desktopPath = [Environment]::GetFolderPath('Desktop')
         $defaultServerDir = Join-Path -Path $desktopPath -ChildPath "NazzyServer"
 
-        Write-Host "  • Обнаружен запуск из диалогового окна 'Выполнить' (Win + R)." -ForegroundColor DarkYellow
-        Write-Host "  • Рекомендуемая папка: $defaultServerDir" -ForegroundColor Cyan
-        $customInput = Read-Host "`n  Нажмите Enter для создания сервера в этой папке (или укажите свой путь)"
+        Write-Host "  • Обнаружен запуск из системной папки ($ServerPath)." -ForegroundColor DarkYellow
+        Write-Host "  • Папка сервера по умолчанию: $defaultServerDir" -ForegroundColor Cyan
+        $customInput = Read-Host "`n  Нажмите Enter для установки на Рабочий стол (или введите другой путь)"
         if ($customInput -and $customInput.Trim()) {
             $ServerPath = $customInput.Trim().Replace('"', '')
         } else {
             $ServerPath = $defaultServerDir
         }
     }
+
+    # Проверка прав на запись в $ServerPath
+    try {
+        if (-not (Test-Path -LiteralPath $ServerPath)) {
+            $null = New-Item -ItemType Directory -Path $ServerPath -Force
+        }
+        $testFile = Join-Path -Path $ServerPath -ChildPath ".write_perm_test"
+        [System.IO.File]::WriteAllText($testFile, "test")
+        Remove-Item -LiteralPath $testFile -Force -ErrorAction SilentlyContinue
+    } catch {
+        $desktopPath = [Environment]::GetFolderPath('Desktop')
+        $ServerPath = Join-Path -Path $desktopPath -ChildPath "NazzyServer"
+        if (-not (Test-Path -LiteralPath $ServerPath)) {
+            $null = New-Item -ItemType Directory -Path $ServerPath -Force
+        }
+        Write-Host "  • Внимание: запись в исходную папку ограничена. Перенаправлено в: $ServerPath" -ForegroundColor DarkYellow
+    }
+
     Write-Host "  • Папка сервера: $ServerPath" -ForegroundColor Green
 
     # [3/5] Выбор режима
