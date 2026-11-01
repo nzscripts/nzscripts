@@ -611,6 +611,21 @@ Write-Host "Выбрана Java: $($selectedJava.Path)" -ForegroundColor Green
 Write-Host "Версия: $($selectedJava.Version) | 64-Bit: $($selectedJava.Is64Bit)" -ForegroundColor Gray
 
 # Выбор режима
+# Проверка запуска через Win + R (когда рабочая директория - профиль пользователя или System32)
+if ($ServerPath -ieq $env:USERPROFILE -or $ServerPath -ieq "$env:SystemRoot\System32" -or $ServerPath -ieq $env:SystemRoot) {
+    $desktopPath = [Environment]::GetFolderPath('Desktop')
+    $defaultServerDir = Join-Path -Path $desktopPath -ChildPath "NazzyServer"
+
+    Write-Host "`n[Win + R] Обнаружен запуск из диалогового окна 'Выполнить'." -ForegroundColor Yellow
+    Write-Host "Папка сервера по умолчанию: $defaultServerDir" -ForegroundColor Cyan
+    $customInput = Read-Host "Нажмите Enter для создания сервера в этой папке (или укажите свой путь)"
+    if ($customInput -and $customInput.Trim()) {
+        $ServerPath = $customInput.Trim().Replace('"', '')
+    } else {
+        $ServerPath = $defaultServerDir
+    }
+}
+
 $chosenModeConfig = $null
 if ($Mode -eq 'Interactive') {
     Write-Host "`nДоступные режимы для установки:" -ForegroundColor White
@@ -690,5 +705,12 @@ Write-Host "  Сервер готов к запуску! Файл запуска
 Write-Host "========================================================" -ForegroundColor Cyan
 
 if ($Mode -eq 'Interactive') {
-    Pause
+    $runNow = Read-Host "`nЗапустить сервер прямо сейчас? (Y/N, Enter = Y)"
+    if ($runNow -eq '' -or $runNow -ieq 'Y' -or $runNow -ieq 'Д') {
+        Write-Host "Запуск сервера..." -ForegroundColor Green
+        Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$batPath`"" -WorkingDirectory $ServerPath
+    } else {
+        Write-Host "Для запуска сервера откройте файл: $batPath" -ForegroundColor Cyan
+        Pause
+    }
 }
