@@ -724,24 +724,25 @@ try {
     $batPath = Join-Path -Path $ServerPath -ChildPath "start.bat"
     $escapedJavaPath = $selectedJava.Path.Replace('"', '')
 
-    $startScriptContent = @"
-@echo off
-chcp 65001 >nul
-title Minecraft Server 1.12.2
-set "JAVA_BIN=$escapedJavaPath"
-echo ========================================================
-echo Запуск сервера Forge 1.12.2...
-echo (Автоподтверждение FML включено)
-echo ========================================================
-"%JAVA_BIN%" -Xms${MinRamGB}G -Xmx${MaxRamGB}G -Dfml.queryResult=confirm -jar $forgeJarName nogui
-if %ERRORLEVEL% NEQ 0 (
-    echo.
-    echo Попытка запуска через системную java...
-    java -Xms${MinRamGB}G -Xmx${MaxRamGB}G -Dfml.queryResult=confirm -jar $forgeJarName nogui
-)
-pause
-"@
-    Set-Content -LiteralPath $batPath -Value $startScriptContent -Encoding UTF8
+    $batLines = @(
+        '@echo off',
+        'chcp 65001 >nul',
+        'title Minecraft Server 1.12.2',
+        "set `"JAVA_BIN=$escapedJavaPath`"",
+        'echo ========================================================',
+        'echo   Minecraft Forge 1.12.2 Server (Nazzy Story Modes)',
+        'echo   Auto-confirm FML: Enabled',
+        'echo ========================================================',
+        "`"%JAVA_BIN%`" -Xms${MinRamGB}G -Xmx${MaxRamGB}G -Dfml.queryResult=confirm -jar $forgeJarName nogui",
+        'if %ERRORLEVEL% NEQ 0 (',
+        '    echo.',
+        '    echo [!] Direct Java failed. Trying system java fallback...',
+        "    java -Xms${MinRamGB}G -Xmx${MaxRamGB}G -Dfml.queryResult=confirm -jar $forgeJarName nogui",
+        ')',
+        'pause'
+    )
+    $batContent = ($batLines -join "`r`n") + "`r`n"
+    [System.IO.File]::WriteAllText($batPath, $batContent, [System.Text.UTF8Encoding]::new($false))
 
     # Красивая карточка завершения
     $modeTitle = if ($chosenModeConfig) { $chosenModeConfig.Name } else { "Чистый сервер" }
