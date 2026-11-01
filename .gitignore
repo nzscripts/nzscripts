@@ -1,0 +1,43 @@
+# ====================================================================
+# .gitignore for Minecraft Forge 1.12.2 Nazzy Modes Automation
+# ====================================================================
+
+# Исполняемые файлы и архивы сервера (не загружать в git tree!)
+*.jar
+*.zip
+*.rar
+libraries/
+mods/
+config/
+ModularWarfare/
+resourcepacks/
+logs/
+crash-reports/
+.mixin.out/
+
+# Папки миров / карт
+world/
+blizzard/
+INFCTD/
+Phasmophobia_Halloween/
+SLASHER/
+LABORATORY/
+CROSSBATTLE/
+SCAVENGER_MAP/
+
+# Конфигурации и состояние сервера
+eula.txt
+server.properties
+*.json
+!package.json
+
+# Локальный кэш архивов (выгружайте их в GitHub Releases!)
+builds_cache/
+
+# Временные тестовые папки и служебные файлы ОС
+test_*/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+push.bat
