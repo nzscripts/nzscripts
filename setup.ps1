@@ -45,8 +45,8 @@
     powershell -NoExit -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/nzscripts/nzscripts/refs/heads/main/script.ps1 | iex"
 
 .EXAMPLE
-    # Automated deployment of Crossbattle with 6 GB RAM:
-    .\script.ps1 -Mode Crossbattle -MaxRamGB 6 -MinRamGB 2 -Force
+    # Automated deployment of Laboratory with 6 GB RAM:
+    .\script.ps1 -Mode Laboratory -MaxRamGB 6 -MinRamGB 2 -Force
 
 .OUTPUTS
     None. Outputs formatted status messages and generates server runtime files.
@@ -91,13 +91,121 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $Script:AvailableModes = @{
-    'Infected'     = @{ Name = 'INFECTED v1.1';           File = 'INFECTED_v1.1_DISCORD.zip';   Desc = 'Выживание и мутации';          Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1216449065005486251/INFECTED_v1.1_DISCORD.zip?ex=6ae82a39&is=6ae6d8b9&hm=0b0b93a02e8aeb62e58e80fa885c462226d2a0eab59ab606f2f00545e0bd83f0&' }
-    'Blizzard'     = @{ Name = 'OPERATION BLIZZARD';      File = 'OPERATION_BLIZZARD.zip';      Desc = 'Арктика, холод и мутанты';     Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1214709450280140880/OPERATION_BLIZZARD.zip?ex=6ae86d95&is=6ae71c15&hm=ecf6b2151bcc6150ef0fc95ce59eb79677698d5469510927b7ad15a03efdafed&' }
-    'Phasmophobia' = @{ Name = 'PHASMOPHOBIA HALLOWEEN';  File = 'PHASMOPHOBIA_HALLOWEEN.rar';  Desc = 'Хоррор-расследование';         Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/905517032265617409/PHASMOPHOBIA_HALLOWEEN.rar?ex=6ae82734&is=6ae6d5b4&hm=9377702f3624aea35b6cd8b45e4a4d4b6342c6cb6d25ec256a6c012c44ccc790&' }
-    'Slasher'      = @{ Name = 'SLASHER (Redwood)';       File = 'SLASHER_Redwood_.rar';        Desc = 'Маньяк в лагере Редвуд';       Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/778261521800233022/897470764582830091/SLASHER_Redwood_.rar?ex=6ae88b48&is=6ae739c8&hm=c5356cf49c0a27b73f5632b07480c0366bf32eff190bf7ebd513ea7a3d124eda&' }
-    'Laboratory'   = @{ Name = 'LABORATORY NZ';           File = 'LABORATORY_NZ.zip';           Desc = 'Секретная лаборатория';        Type = 'Direct'; Url = 'https://cdn.discordapp.com/attachments/989644883390246922/1215231119906045973/LABORATORY_NZ.zip?ex=6ae8592c&is=6ae707ac&hm=af2b0c9eff80f5de18ceb15c5970996f36e6597890ede5029324d7e055b9442e&' }
-    'Crossbattle'  = @{ Name = 'CROSSBATTLE';             File = 'CROSSBATTLE.rar';             Desc = 'PvP перестрелки и арена';      Type = 'GDrive'; Id  = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj' }
-    'Scavenger'    = @{ Name = 'SCAVENGER';               File = 'SCAVENGER.rar';               Desc = 'Сбор лута и эвакуация';        Type = 'GDrive'; Id  = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle' }
+    'Infected'     = @{
+        Name       = 'INFECTED v1.1'
+        File       = 'INFECTED_v1.1_DISCORD.zip'
+        Desc       = 'Выживание и мутации'
+        Players    = '7 игроков (+набл)'
+        MaxPlayers = 10
+        Type       = 'Direct'
+        Url        = 'https://cdn.discordapp.com/attachments/989644883390246922/1216449065005486251/INFECTED_v1.1_DISCORD.zip?ex=6ae82a39&is=6ae6d8b9&hm=0b0b93a02e8aeb62e58e80fa885c462226d2a0eab59ab606f2f00545e0bd83f0&'
+        Features   = 'Голосовой чат'
+        Summary    = 'Психологическая игра в стиле Мафии / Deceit / Among Us'
+        LoreLines  = @(
+            'Психологическая детективная игра (аналог Deceit / Among Us).',
+            'Выжившие должны выполнять задания и стараться вычислить заражённого.',
+            'Заражённый должен скрытно препятствовать выполнению задач и убивать.',
+            'Игроки сверх 7-ми автоматически переходят в режим наблюдателя.'
+        )
+    }
+    'Blizzard'     = @{
+        Name       = 'OPERATION BLIZZARD'
+        File       = 'OPERATION_BLIZZARD.zip'
+        Desc       = 'Арктика: Атака / Оборона'
+        Players    = '2-8 игроков'
+        MaxPlayers = 8
+        Type       = 'Direct'
+        Url        = 'https://cdn.discordapp.com/attachments/989644883390246922/1214709450280140880/OPERATION_BLIZZARD.zip?ex=6ae86d95&is=6ae71c15&hm=ecf6b2151bcc6150ef0fc95ce59eb79677698d5469510927b7ad15a03efdafed&'
+        Features   = 'Мод на оружие'
+        Summary    = 'Штурм арктического комплекса и захват документов'
+        LoreLines  = @(
+            'Тактическое противостояние двух команд в заснеженном комплексе.',
+            'Команда "Атака": Захватить и принести на базу секретные документы.',
+            'Команда "Оборона": Занять укрепления и помешать захвату данных.',
+            'Арктический холод, мутанты и огнестрельный арсенал ModularWarfare.'
+        )
+    }
+    'Phasmophobia' = @{
+        Name       = 'PHASMOPHOBIA HALLOWEEN'
+        File       = 'PHASMOPHOBIA_HALLOWEEN.rar'
+        Desc       = 'Хоррор-расследование'
+        Players    = '3-5 игроков'
+        MaxPlayers = 5
+        Type       = 'Direct'
+        Url        = 'https://cdn.discordapp.com/attachments/778261521800233022/905517032265617409/PHASMOPHOBIA_HALLOWEEN.rar?ex=6ae82734&is=6ae6d5b4&hm=9377702f3624aea35b6cd8b45e4a4d4b6342c6cb6d25ec256a6c012c44ccc790&'
+        Features   = 'Голосовой чат'
+        Summary    = 'Охотники против Призрака в проклятом особняке'
+        LoreLines  = @(
+            'Задача Охотников: определить тип Призрака по уликам, найти и вынести Реликвию в фургон.',
+            'Задача Призрака: Убить всех Охотников и не дать унести Реликвию из Дома.',
+            'Хэллоуинское обновление: исправлены баги и доработан баланс расследования.'
+        )
+    }
+    'Slasher'      = @{
+        Name       = 'SLASHER (Redwood)'
+        File       = 'SLASHER_Redwood_.rar'
+        Desc       = 'Маньяк в лагере Редвуд'
+        Players    = '5 игроков'
+        MaxPlayers = 5
+        Type       = 'Direct'
+        Url        = 'https://cdn.discordapp.com/attachments/778261521800233022/897470764582830091/SLASHER_Redwood_.rar?ex=6ae88b48&is=6ae739c8&hm=c5356cf49c0a27b73f5632b07480c0366bf32eff190bf7ebd513ea7a3d124eda&'
+        Features   = 'Голосовой чат'
+        Summary    = 'Выжившие против кровожадной твари в лагере Редвуд'
+        LoreLines  = @(
+            'Роль Выжившего: Найти способ совершить побег, выполняя задания по лагерю.',
+            'Роль Твари (Маньяка): Выслеживать людей в лесу и безжалостно убивать их.',
+            'Атмосферный хоррор на выживание с поддержкой голосового чата.'
+        )
+    }
+    'Laboratory'   = @{
+        Name       = 'LABORATORY NZ'
+        File       = 'LABORATORY_NZ.zip'
+        Desc       = 'Секретная лаборатория D7'
+        Players    = '8 игроков'
+        MaxPlayers = 8
+        Type       = 'Direct'
+        Url        = 'https://cdn.discordapp.com/attachments/989644883390246922/1215231119906045973/LABORATORY_NZ.zip?ex=6ae8592c&is=6ae707ac&hm=af2b0c9eff80f5de18ceb15c5970996f36e6597890ede5029324d7e055b9442e&'
+        Features   = 'Мод на оружие'
+        Summary    = 'Прорыв содержания в комплексе D7 организации Netherhill'
+        LoreLines  = @(
+            'В комплексе "D7" организации "Netherhill" произошло нарушение условий содержания.',
+            'Специалисты: Сбежать из разрушенного комплекса живыми.',
+            'Оперативники CSG: Устранить Специалистов, Монстра и стабилизировать работу Реактора.',
+            'Объект "NH-67B": Смертоносный мутант, способный разорвать всех в клочья.'
+        )
+    }
+    'Crossbattle'  = @{
+        Name       = 'CROSSBATTLE'
+        File       = 'CROSSBATTLE.rar'
+        Desc       = 'PvP арена и магазин'
+        Players    = '2-10 игроков'
+        MaxPlayers = 10
+        Type       = 'GDrive'
+        Id         = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj'
+        Features   = 'Мод на оружие'
+        Summary    = 'Командный шутер: добыча ресурсов, покупка оружия и перестрелки'
+        LoreLines  = @(
+            'Динамичный командный PvP-шутер на специализированной арене.',
+            'Добывайте ресурсы на карте, покупайте броню и винтовки в оружейном магазине.',
+            'Сражайтесь за доминирование с применением арсенала ModularWarfare.'
+        )
+    }
+    'Scavenger'    = @{
+        Name       = 'SCAVENGER'
+        File       = 'SCAVENGER.rar'
+        Desc       = 'Егеря vs Падальщик'
+        Players    = '2+ игроков'
+        MaxPlayers = 8
+        Type       = 'GDrive'
+        Id         = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle'
+        Features   = 'Мод на оружие'
+        Summary    = 'Охота на кровожадного Падальщика в мрачной зоне'
+        LoreLines  = @(
+            'Противостояние группы Егерей и гигантского кровожадного Падальщика.',
+            'Задача Егерей: Задокументировать всех убитых либо застрелить Падальщика из винтовки.',
+            'Задача Падальщика: Выследить и раскромсать всех Егерей в зоне.'
+        )
+    }
 }
 
 function Find-PrismJavaInstallation {
@@ -448,13 +556,16 @@ function Set-ServerConfiguration {
     .DESCRIPTION
         Automatically agrees to Minecraft EULA and ensures essential server settings:
         online-mode=false, enable-command-block=true, allow-flight=true,
-        spawn-protection=0, gamemode=2, max-players=10, and sets level-name.
+        spawn-protection=0, gamemode=2, max-players, and sets level-name.
 
     .PARAMETER TargetDirectory
         The server directory containing server.properties and eula.txt.
 
     .PARAMETER LevelName
         The world name to set in server.properties (default: 'world').
+
+    .PARAMETER MaxPlayers
+        Maximum player slots to allocate in server.properties (default: 10).
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -463,7 +574,10 @@ function Set-ServerConfiguration {
         [string]$TargetDirectory,
 
         [Parameter()]
-        [string]$LevelName = 'world'
+        [string]$LevelName = 'world',
+
+        [Parameter()]
+        [int]$MaxPlayers = 10
     )
 
     $eulaPath = Join-Path -Path $TargetDirectory -ChildPath 'eula.txt'
@@ -479,7 +593,7 @@ function Set-ServerConfiguration {
         'allow-flight'         = 'true'
         'spawn-protection'     = '0'
         'gamemode'             = '2'
-        'max-players'          = '10'
+        'max-players'          = [string]$MaxPlayers
         'level-name'           = $LevelName
     }
 
@@ -626,6 +740,8 @@ function Install-StoryMode {
         $levelDatFile = Get-ChildItem -LiteralPath $tempExtractPath -Recurse -Filter 'level.dat' -ErrorAction SilentlyContinue | Select-Object -First 1
         $worldSourceDir = $null
 
+        $configuredMaxPlayers = if ($ModeConfig.MaxPlayers) { [int]$ModeConfig.MaxPlayers } else { 10 }
+
         if ($null -ne $levelDatFile) {
             $worldSourceDir = $levelDatFile.Directory
             $worldFolderName = $worldSourceDir.Name
@@ -640,8 +756,11 @@ function Install-StoryMode {
             }
             Copy-Item -LiteralPath $worldSourceDir.FullName -Destination $worldTarget -Recurse -Force
 
-            Set-ServerConfiguration -TargetDirectory $TargetDirectory -LevelName $worldFolderName
-            Write-Host "    • Карта '$worldFolderName' установлена (server.properties: level-name=$worldFolderName)" -ForegroundColor Green
+            Set-ServerConfiguration -TargetDirectory $TargetDirectory -LevelName $worldFolderName -MaxPlayers $configuredMaxPlayers
+            Write-Host "    • Карта '$worldFolderName' установлена (server.properties: level-name=$worldFolderName, max-players=$configuredMaxPlayers)" -ForegroundColor Green
+        }
+        else {
+            Set-ServerConfiguration -TargetDirectory $TargetDirectory -LevelName 'world' -MaxPlayers $configuredMaxPlayers
         }
 
         # 2. Mods deployment with client-only filtering (OptiFine, BetterFoliage, tlskincape)
@@ -838,25 +957,24 @@ try {
     $chosenModeConfig = $null
     if ($Mode -eq 'Interactive') {
         Write-Host "`n[3/5] 🎮 Выберите сюжетный режим для установки:" -ForegroundColor Yellow
-        Write-Host '┌───┬──────────────────────────┬─────────────────────────────┬─────────────────┐' -ForegroundColor DarkGray
-        Write-Host '│ № │ РЕЖИМ                    │ ОПИСАНИЕ                    │ ОСОБЕННОСТИ     │' -ForegroundColor Cyan
-        Write-Host '├───┼──────────────────────────┼─────────────────────────────┼─────────────────┤' -ForegroundColor DarkGray
-        Write-Host '│ 1 │ INFECTED v1.1            │ Выживание и мутации         │ Голосовой чат   │' -ForegroundColor White
-        Write-Host '│ 2 │ OPERATION BLIZZARD       │ Арктика, холод и мутанты    │ Мод на оружие   │' -ForegroundColor White
-        Write-Host '│ 3 │ PHASMOPHOBIA HALLOWEEN   │ Хоррор-расследование        │ Голосовой чат   │' -ForegroundColor White
-        Write-Host '│ 4 │ SLASHER (Redwood)        │ Маньяк в лагере Редвуд      │ Голосовой чат   │' -ForegroundColor White
-        Write-Host '│ 5 │ LABORATORY NZ            │ Секретная лаборатория       │ Мод на оружие   │' -ForegroundColor White
-        Write-Host '│ 6 │ CROSSBATTLE              │ PvP перестрелки и арена     │ Мод на оружие   │' -ForegroundColor White
-        Write-Host '│ 7 │ SCAVENGER                │ Сбор лута и эвакуация       │ Мод на оружие   │' -ForegroundColor White
-        Write-Host '│ 0 │ Чистый сервер            │ Forge 1.12.2 без модов      │ Чистый мир      │' -ForegroundColor Gray
-        Write-Host '└───┴──────────────────────────┴─────────────────────────────┴─────────────────┘' -ForegroundColor DarkGray
+        Write-Host '┌───┬──────────────────────────┬─────────────────────────────┬──────────────────┬─────────────────┐' -ForegroundColor DarkGray
+        Write-Host '│ № │ РЕЖИМ                    │ СЮЖЕТ И РОЛИ                │ ИГРОКИ           │ ОСОБЕННОСТИ     │' -ForegroundColor Cyan
+        Write-Host '├───┼──────────────────────────┼─────────────────────────────┼──────────────────┼─────────────────┤' -ForegroundColor DarkGray
+        Write-Host '│ 1 │ INFECTED v1.1            │ Выживание и мутации         │ 7 игроков (+набл)│ Голосовой чат   │' -ForegroundColor White
+        Write-Host '│ 2 │ OPERATION BLIZZARD       │ Арктика: Атака / Оборона    │ 2-8 игроков      │ Мод на оружие   │' -ForegroundColor White
+        Write-Host '│ 3 │ PHASMOPHOBIA HALLOWEEN   │ Охотники vs Призрак         │ 3-5 игроков      │ Голосовой чат   │' -ForegroundColor White
+        Write-Host '│ 4 │ SLASHER (Redwood)        │ Выжившие vs Маньяк          │ 5 игроков        │ Голосовой чат   │' -ForegroundColor White
+        Write-Host '│ 5 │ LABORATORY NZ            │ Комплекс D7: CSG / NH-67B   │ 8 игроков        │ Мод на оружие   │' -ForegroundColor White
+        Write-Host '│ 6 │ CROSSBATTLE              │ PvP арена и магазин         │ 2-10 игроков     │ Мод на оружие   │' -ForegroundColor White
+        Write-Host '│ 7 │ SCAVENGER                │ Егеря vs Падальщик          │ 2+ игроков       │ Мод на оружие   │' -ForegroundColor White
+        Write-Host '│ 0 │ Чистый сервер            │ Forge 1.12.2 без модов      │ Любое кол-во     │ Чистый мир      │' -ForegroundColor Gray
+        Write-Host '└───┴──────────────────────────┴─────────────────────────────┴──────────────────┴─────────────────┘' -ForegroundColor DarkGray
 
         $userInput = Read-Host "`nВведите номер режима [1-7] (по умолчанию: 0)"
         $modeKeys = @('Infected', 'Blizzard', 'Phasmophobia', 'Slasher', 'Laboratory', 'Crossbattle', 'Scavenger')
         if ($userInput -match '^[1-7]$') {
             $selectedKey = $modeKeys[[int]$userInput - 1]
             $chosenModeConfig = $Script:AvailableModes[$selectedKey]
-            Write-Host "`n  • Выбран режим: $($chosenModeConfig.Name) ($($chosenModeConfig.Desc))" -ForegroundColor Green
         }
         else {
             Write-Host "`n  • Выбран чистый сервер Forge 1.12.2." -ForegroundColor Gray
@@ -864,7 +982,20 @@ try {
     }
     elseif ($Mode -ne 'None') {
         $chosenModeConfig = $Script:AvailableModes[$Mode]
-        Write-Host "`n[3/5] 🎮 Режим передан через аргументы: $($chosenModeConfig.Name)" -ForegroundColor Green
+    }
+
+    # Show Mode Briefing Card
+    if ($null -ne $chosenModeConfig) {
+        Write-Host "`n╔══════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Green
+        Write-Host "║ 🎮 БРИФИНГ РЕЖИМА: $($chosenModeConfig.Name.PadRight(63))║" -ForegroundColor Green
+        Write-Host '╠══════════════════════════════════════════════════════════════════════════════════════╣' -ForegroundColor Green
+        Write-Host "║  • Состав игроков: $($chosenModeConfig.Players) (настроено max-players=$($chosenModeConfig.MaxPlayers))" -ForegroundColor Cyan
+        Write-Host "║  • Особенности:    $($chosenModeConfig.Features)" -ForegroundColor DarkCyan
+        Write-Host '║  • Сюжет и задачи:' -ForegroundColor Yellow
+        foreach ($line in $chosenModeConfig.LoreLines) {
+            Write-Host "║    - $line" -ForegroundColor White
+        }
+        Write-Host '╚══════════════════════════════════════════════════════════════════════════════════════╝' -ForegroundColor Green
     }
 
     # [4/5] Forge 1.12.2 Deployment
@@ -889,7 +1020,8 @@ try {
     Copy-Item -LiteralPath (Get-ChildItem -LiteralPath (Join-Path -Path $centralCache -ChildPath 'libraries')).FullName -Destination $targetLibraries -Recurse -Force
     Write-Host '  • Ядро Forge 1.12.2 и библиотеки успешно скопированы' -ForegroundColor Green
 
-    Set-ServerConfiguration -TargetDirectory $ServerPath
+    $baseMaxPlayers = if ($null -ne $chosenModeConfig) { [int]$chosenModeConfig.MaxPlayers } else { 10 }
+    Set-ServerConfiguration -TargetDirectory $ServerPath -MaxPlayers $baseMaxPlayers
 
     # [5/5] Story Mode Deployment
     Write-Host "`n[5/5] 📦 Установка модов, карты и файлов конфигурации..." -ForegroundColor Yellow
