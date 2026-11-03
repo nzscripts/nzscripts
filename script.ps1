@@ -88,13 +88,13 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $Script:AvailableModes = @{
-    'Infected'     = @{ Name = 'INFECTED v1.1';          File = 'INFECTED_v1.1_DISCORD.zip';  Desc = 'Выживание с мутациями';    MaxPlayers = 10 }
-    'Blizzard'     = @{ Name = 'OPERATION BLIZZARD';     File = 'OPERATION_BLIZZARD.zip';     Desc = 'Арктика и военная база';   MaxPlayers = 8 }
-    'Phasmophobia' = @{ Name = 'PHASMOPHOBIA HALLOWEEN'; File = 'PHASMOPHOBIA_HALLOWEEN.rar'; Desc = 'Хоррор-расследование';     MaxPlayers = 5 }
-    'Slasher'      = @{ Name = 'SLASHER (Redwood)';      File = 'SLASHER_Redwood_.rar';       Desc = 'Маньяк в лагере';          MaxPlayers = 5 }
-    'Laboratory'   = @{ Name = 'LABORATORY NZ';          File = 'LABORATORY_NZ.zip';          Desc = 'Секретная лаборатория D7'; MaxPlayers = 8 }
-    'Crossbattle'  = @{ Name = 'CROSSBATTLE';            File = 'CROSSBATTLE.rar';            Desc = 'PvP арена и перестрелки';  MaxPlayers = 10; Id = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj' }
-    'Scavenger'    = @{ Name = 'SCAVENGER';              File = 'SCAVENGER.rar';              Desc = 'Охота на монстра';         MaxPlayers = 8;  Id = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle' }
+    'Infected'     = @{ Name = 'INFECTED v1.1';          File = 'INFECTED_v1.1_DISCORD.zip';  Desc = "Выживание с мутациями";    MaxPlayers = 10 }
+    'Blizzard'     = @{ Name = 'OPERATION BLIZZARD';     File = 'OPERATION_BLIZZARD.zip';     Desc = "Арктика и военная база";   MaxPlayers = 8 }
+    'Phasmophobia' = @{ Name = 'PHASMOPHOBIA HALLOWEEN'; File = 'PHASMOPHOBIA_HALLOWEEN.rar'; Desc = "Хоррор-расследование";     MaxPlayers = 5 }
+    'Slasher'      = @{ Name = 'SLASHER (Redwood)';      File = 'SLASHER_Redwood_.rar';       Desc = "Маньяк в лагере";          MaxPlayers = 5 }
+    'Laboratory'   = @{ Name = 'LABORATORY NZ';          File = 'LABORATORY_NZ.zip';          Desc = "Секретная лаборатория D7"; MaxPlayers = 8 }
+    'Crossbattle'  = @{ Name = 'CROSSBATTLE';            File = 'CROSSBATTLE.rar';            Desc = "PvP арена и перестрелки";  MaxPlayers = 10; Id = '1WcpiUfzsTZni503RDH_bquKiEYRg2pqj' }
+    'Scavenger'    = @{ Name = 'SCAVENGER';              File = 'SCAVENGER.rar';              Desc = "Охота на монстра";         MaxPlayers = 8;  Id = '1NRzPSr0bxGgOuKVxj-aPFAMwvQk4sUle' }
 }
 
 function Find-PrismJavaInstallation {
@@ -302,7 +302,7 @@ function Initialize-ForgeBase {
         Invoke-WebRequest -Uri $asmUrl -OutFile $asmJar -UseBasicParsing
     }
 
-    Write-Host 'Развертывание ядра и библиотек Forge...'
+    Write-Host "Развертывание ядра и библиотек Forge..."
     $psi = [System.Diagnostics.ProcessStartInfo]::new()
     $psi.FileName = $JavaExecutable
     $psi.Arguments = "-jar `"$installerPath`" --installServer"
@@ -404,7 +404,7 @@ function Expand-ArchivePackage {
     $portable7z = Join-Path -Path $portable7zDir -ChildPath '7za.exe'
     if (-not (Test-Path -LiteralPath $portable7z)) {
         try {
-            Write-Host 'Загрузка 7za.exe для распаковки .rar...'
+            Write-Host "Загрузка 7za.exe для распаковки .rar..."
             $sevenZipUrl = 'https://www.7-zip.org/a/7za920.zip'
             $tempZip = Join-Path -Path $env:TEMP -ChildPath '7za920.zip'
             if (-not (Test-Path -LiteralPath $portable7zDir)) {
@@ -612,7 +612,7 @@ function Install-StoryMode {
     $null = New-Item -ItemType Directory -Path $tempExtractPath -Force
 
     try {
-        Write-Host 'Распаковка архива...'
+        Write-Host "Распаковка архива..."
         $isExtracted = Expand-ArchivePackage -ArchiveFilePath $archiveFullPath -DestinationPath $tempExtractPath
         if (-not $isExtracted) {
             throw "Не удалось распаковать архив $archiveName."
@@ -722,7 +722,7 @@ function Install-StoryMode {
             Get-ChildItem -LiteralPath $configSource.FullName -ErrorAction SilentlyContinue | ForEach-Object {
                 Copy-Item -LiteralPath $_.FullName -Destination $configTarget -Recurse -Force
             }
-            Write-Host 'Скопированы конфигурации модов'
+            Write-Host "Скопированы конфигурации модов"
         }
 
         # 5. Resource packs
@@ -772,15 +772,15 @@ try {
     }
 
     if ($null -eq $selectedJava) {
-        Write-Host 'Ошибка: Java 8 (64-bit) не найдена в системе.' -ForegroundColor Red
+        Write-Host "Ошибка: Java 8 (64-bit) не найдена в системе." -ForegroundColor Red
         if ($foundJavas.Count -gt 0) {
-            Write-Host 'Найденные версии Java:'
+            Write-Host "Найденные версии Java:"
             foreach ($j in $foundJavas) {
                 Write-Host "  - $($j.Path) ($($j.Version), 64-bit: $($j.Is64Bit))"
             }
         }
         Write-Host "`nДля запуска Forge 1.12.2 требуется Java 8 (64-bit)."
-        Write-Host 'Скачать: https://www.java.com/en/download/manual.jsp'
+        Write-Host "Скачать: https://www.java.com/en/download/manual.jsp"
         Write-Host "`nНажмите любую клавишу для выхода..."
         [void][Console]::ReadKey($true)
         exit 1
@@ -802,7 +802,7 @@ try {
         $defaultServerDir = Join-Path -Path $desktopPath -ChildPath 'NazzyServer'
 
         Write-Host "Запуск из системной папки. По умолчанию выбрана: $defaultServerDir"
-        $customInput = Read-Host 'Нажмите Enter для продолжения (или введите другой путь)'
+        $customInput = Read-Host "Нажмите Enter для продолжения (или введите другой путь)"
         if ($customInput -and $customInput.Trim()) {
             $ServerPath = $customInput.Trim().Replace('"', '')
         }
@@ -834,14 +834,14 @@ try {
     $chosenModeConfig = $null
     if ($Mode -eq 'Interactive') {
         Write-Host "`n[3/5] Выберите режим для установки:"
-        Write-Host '  [1] INFECTED v1.1          - Выживание с мутациями'
-        Write-Host '  [2] OPERATION BLIZZARD     - Арктика и военная база'
-        Write-Host '  [3] PHASMOPHOBIA HALLOWEEN - Хоррор-расследование'
-        Write-Host '  [4] SLASHER (Redwood)      - Маньяк в лагере'
-        Write-Host '  [5] LABORATORY NZ          - Секретная лаборатория D7'
-        Write-Host '  [6] CROSSBATTLE            - PvP арена и перестрелки'
-        Write-Host '  [7] SCAVENGER              - Охота на монстра'
-        Write-Host '  [0] Чистый сервер          - Forge 1.12.2 без модов'
+        Write-Host "  [1] INFECTED v1.1          - Выживание с мутациями"
+        Write-Host "  [2] OPERATION BLIZZARD     - Арктика и военная база"
+        Write-Host "  [3] PHASMOPHOBIA HALLOWEEN - Хоррор-расследование"
+        Write-Host "  [4] SLASHER (Redwood)      - Маньяк в лагере"
+        Write-Host "  [5] LABORATORY NZ          - Секретная лаборатория D7"
+        Write-Host "  [6] CROSSBATTLE            - PvP арена и перестрелки"
+        Write-Host "  [7] SCAVENGER              - Охота на монстра"
+        Write-Host "  [0] Чистый сервер          - Forge 1.12.2 без модов"
 
         $userInput = Read-Host "`nНомер режима [0-7] (по умолчанию: 0)"
         $modeKeys = @('Infected', 'Blizzard', 'Phasmophobia', 'Slasher', 'Laboratory', 'Crossbattle', 'Scavenger')
@@ -851,7 +851,7 @@ try {
             Write-Host "Выбран режим: $($chosenModeConfig.Name)"
         }
         else {
-            Write-Host 'Выбран чистый сервер Forge 1.12.2.'
+            Write-Host "Выбран чистый сервер Forge 1.12.2."
         }
     }
     elseif ($Mode -ne 'None') {
@@ -879,7 +879,7 @@ try {
         $null = New-Item -ItemType Directory -Path $targetLibraries -Force
     }
     Copy-Item -LiteralPath (Get-ChildItem -LiteralPath (Join-Path -Path $centralCache -ChildPath 'libraries')).FullName -Destination $targetLibraries -Recurse -Force
-    Write-Host 'Ядро и библиотеки Forge скопированы'
+    Write-Host "Ядро и библиотеки Forge скопированы"
 
     $baseMaxPlayers = if ($null -ne $chosenModeConfig) { [int]$chosenModeConfig.MaxPlayers } else { 10 }
     Set-ServerConfiguration -TargetDirectory $ServerPath -MaxPlayers $baseMaxPlayers
@@ -922,7 +922,7 @@ try {
 
     # Completion
     Write-Host "`n========================================================================"
-    Write-Host '  Сервер успешно установлен'
+    Write-Host "  Сервер успешно установлен"
     Write-Host '========================================================================'
     Write-Host "  Режим:       $modeTitle"
     Write-Host "  Директория:  $ServerPath"
@@ -932,8 +932,8 @@ try {
 
     if ($Mode -eq 'Interactive') {
         Write-Host "`n[Enter] Запустить сервер сейчас"
-        Write-Host '[Q]     Выйти (запуск позже через start.bat)'
-        $action = Read-Host 'Выбор'
+        Write-Host "[Q]     Выйти (запуск позже через start.bat)"
+        $action = Read-Host "Выбор"
         if ($action -notmatch '^[qQйЙ]$') {
             Write-Host "`nЗапуск сервера в отдельном окне..."
             Start-Process -FilePath 'cmd.exe' -ArgumentList "/c `"$batPath`"" -WorkingDirectory $ServerPath
@@ -946,7 +946,7 @@ try {
 catch {
     $lastError = $_
     Write-Host "`n========================================================================" -ForegroundColor Red
-    Write-Host '  Ошибка установки' -ForegroundColor Red
+    Write-Host "  Ошибка установки" -ForegroundColor Red
     Write-Host '========================================================================' -ForegroundColor Red
     Write-Host "Сообщение: $($lastError.Exception.Message)" -ForegroundColor Yellow
     Write-Host "Строка:    $($lastError.InvocationInfo.ScriptLineNumber)" -ForegroundColor Gray
